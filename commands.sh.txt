@@ -9,8 +9,13 @@ composer create-project symfony/framework-standard-edition . "3.4.*"
 docker-compose run php bin/console cache:clear
 
 # create the database doctrine migrations
-docker-compose run php composer require doctrine/doctrine-migrations-bundle
+docker-compose run php /bin/sh
+COMPOSER_MEMORY_LIMIT=-1 composer require doctrine/doctrine-migrations-bundle "^1.3"
 
 
-# generate entities
+# generate entities AppBundle:Product
 docker-compose run php bin/console doctrine:generate:entity
+
+# run the migrations
+docker-compose run php bin/console doctrine:migrations:diff
+docker-compose run php bin/console doctrine:migrations:migrate
