@@ -12,3 +12,14 @@ products_post:
     defaults:
         _controller: AppBundle\Controller\ProductsController:postProductsAction
         _format: json
+
+tags:
+    type: rest
+    resource: AppBundle\Controller\TagsController
+
+tags_post:
+    path: /tags
+    methods: [POST]
+    defaults:
+        _controller: AppBundle\Controller\TagsController:postTagsAction
+        _format: json
