@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -25,6 +26,8 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
     private $name;
 
@@ -39,6 +42,9 @@ class Product
      * @var float
      *
      * @ORM\Column(name="price", type="float")
+     * @Assert\NotBlank()
+     * @Assert\Regex("/^\d+(\.?\d*?)$/")
+     * @Assert\GreaterThanOrEqual(1)
      */
     private $price;
 
@@ -125,4 +131,3 @@ class Product
         return $this->price;
     }
 }
-

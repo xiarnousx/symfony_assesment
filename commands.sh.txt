@@ -14,25 +14,28 @@ COMPOSER_MEMORY_LIMIT=-1 composer require doctrine/doctrine-migrations-bundle "^
 
 
 # generate entities AppBundle:Product
-docker-compose run php bin/console doctrine:generate:entity
+docker-compose exec php bin/console doctrine:generate:entity
 
 # run the migrations
-docker-compose run php bin/console doctrine:migrations:diff
-docker-compose run php bin/console doctrine:migrations:migrate
+docker-compose exec php bin/console doctrine:migrations:diff
+docker-compose exec php bin/console doctrine:migrations:migrate
 
 
 # add fixtures for database data development purposes
-docker-compose run php /bin/bash
+docker-compose exec php /bin/bash
 COMPOSER_MEMORY_LIMIT=-1 composer require --dev doctrine/doctrine-fixtures-bundle
 
-docker-compose run php bin/console doctrine:fixtures:load
+docker-compose exec php bin/console doctrine:fixtures:load
 
 # install FOSRestBundle packages which aid in view response format and auto decode json to doctrine entity
 # below package makes it easy to write restful end points with symfony.
-docker-compose run php /bin/bash
+docker-compose exec php /bin/bash
 COMPOSER_MEMORY_LIMIT=-1 composer require friendsofsymfony/rest-bundle
 COMPOSER_MEMORY_LIMIT=-1 composer require jms/serializer-bundle
 
 
 # view automatic generated routes
-docker-compose run php bin/console debug:router
+docker-compose exec php bin/console debug:router
+
+# clear the cache
+docker-compose exec php bin/console cache:clear

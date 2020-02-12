@@ -82,4 +82,9 @@ fos_rest:
         view_response_listener: "force" # allows us to return entity objects from controllers
     body_converter:
         enabled: true
+        validate: true
+        validation_errors_argument: validationErrors
     param_fetcher_listener: true
+    exception:
+        enabled: true
+        exception_controller: AppBundle\Controller\ExceptionController:showAction

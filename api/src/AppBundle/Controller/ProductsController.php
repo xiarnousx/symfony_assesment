@@ -3,11 +3,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Product;
+use AppBundle\Exception\ValidationException;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ProductsController extends AbstractController
 {
@@ -29,8 +31,12 @@ class ProductsController extends AbstractController
      * @ParamConverter("product", converter="fos_rest.request_body")
      * @Rest\NoRoute() 
      */
-    public function postProductsAction(Product $product)
+    public function postProductsAction(Product $product, ConstraintViolationListInterface $validationErrors)
     {
+        if (count($validationErrors) > 0) {
+            throw new ValidationException($validationErrors);
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($product);
         $entityManager->flush();
