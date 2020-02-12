@@ -1,0 +1,16 @@
+# Below are the commands that are used thru out the project
+
+
+# Run below command from current directory in order to install symfony framework
+cd ./api/
+composer create-project symfony/framework-standard-edition . "3.4.*"
+
+# clear the cache
+docker-compose run php bin/console cache:clear
+
+# create the database doctrine migrations
+docker-compose run php composer require doctrine/doctrine-migrations-bundle
+
+
+# generate entities
+docker-compose run php bin/console doctrine:generate:entity
