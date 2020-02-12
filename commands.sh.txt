@@ -19,3 +19,10 @@ docker-compose run php bin/console doctrine:generate:entity
 # run the migrations
 docker-compose run php bin/console doctrine:migrations:diff
 docker-compose run php bin/console doctrine:migrations:migrate
+
+
+# add fixtures for database data development purposes
+docker-compose run php /bin/bash
+COMPOSER_MEMORY_LIMIT=-1 composer require --dev doctrine/doctrine-fixtures-bundle
+
+docker-compose run php bin/console doctrine:fixtures:load
