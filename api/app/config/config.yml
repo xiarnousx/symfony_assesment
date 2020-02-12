@@ -11,20 +11,20 @@ parameters:
 framework:
     #esi: ~
     #translator: { fallbacks: ['%locale%'] }
-    secret: '%secret%'
+    secret: "%secret%"
     router:
-        resource: '%kernel.project_dir%/app/config/routing.yml'
+        resource: "%kernel.project_dir%/app/config/routing.yml"
         strict_requirements: ~
     form: ~
     csrf_protection: ~
     validation: { enable_annotations: true }
     #serializer: { enable_annotations: true }
-    default_locale: '%locale%'
+    default_locale: "%locale%"
     trusted_hosts: ~
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
-        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        save_path: "%kernel.project_dir%/var/sessions/%kernel.environment%"
     fragments: ~
     http_method_override: true
     assets: ~
@@ -33,18 +33,18 @@ framework:
 
 # Twig Configuration
 twig:
-    debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'
+    debug: "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
 
 # Doctrine Configuration
 doctrine:
     dbal:
         driver: pdo_mysql
-        host: '%database_host%'
-        port: '%database_port%'
-        dbname: '%database_name%'
-        user: '%database_user%'
-        password: '%database_password%'
+        host: "%database_host%"
+        port: "%database_port%"
+        dbname: "%database_name%"
+        user: "%database_user%"
+        password: "%database_password%"
         charset: UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
@@ -54,18 +54,32 @@ doctrine:
         #path: '%database_path%'
 
     orm:
-        auto_generate_proxy_classes: '%kernel.debug%'
+        auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    transport: "%mailer_transport%"
+    host: "%mailer_host%"
+    username: "%mailer_user%"
+    password: "%mailer_password%"
     spool: { type: memory }
 
 sensio_framework_extra:
-   router:
+    router:
         annotations: false
+    view:
+        annotations: true # allows param converter
+    request:
+        converters: true
+
+fos_rest:
+    routing_loader:
+        default_format: json
+        include_format: false
+    view:
+        view_response_listener: "force" # allows us to return entity objects from controllers
+    body_converter:
+        enabled: true
+    param_fetcher_listener: true

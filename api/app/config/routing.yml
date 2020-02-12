@@ -1,3 +1,14 @@
 app:
-    resource: '@AppBundle/Controller/'
+    resource: "@AppBundle/Controller/"
     type: annotation
+
+products:
+    type: rest
+    resource: AppBundle\Controller\ProductsController
+
+products_post:
+    path: /products
+    methods: [POST]
+    defaults:
+        _controller: AppBundle\Controller\ProductsController:postProductsAction
+        _format: json

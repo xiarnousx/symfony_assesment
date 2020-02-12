@@ -2,6 +2,8 @@
 
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
+use FOS\RestBundle\FOSRestBundle;
+use JMS\SerializerBundle\JMSSerializerBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -19,6 +21,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new DoctrineMigrationsBundle(),
+            new JMSSerializerBundle(),
+            new FOSRestBundle(),
             new AppBundle\AppBundle(),
         ];
 
