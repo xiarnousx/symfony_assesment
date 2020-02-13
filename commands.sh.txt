@@ -39,3 +39,6 @@ docker-compose exec php bin/console debug:router
 
 # clear the cache
 docker-compose exec php bin/console cache:clear
+
+# drop the database 
+docker-compose exec php bin/console doctrine:schema:drop --force

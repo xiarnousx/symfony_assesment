@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,6 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Product
 {
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
     /**
      * @var int
      *
@@ -47,6 +53,23 @@ class Product
      * @Assert\GreaterThanOrEqual(1)
      */
     private $price;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Tag[]
+     * 
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products", cascade="persist")
+     * @ORM\JoinTable(
+     *  name="product_tag",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
+     *  }
+     * )
+     *
+     */
+    private $tags;
 
 
     /**
@@ -129,5 +152,39 @@ class Product
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * 
+     * @param Tag $tag
+     */
+    public function addTag(Tag $tag)
+    {
+        if ($this->tags->contains($tag)) {
+            return;
+        }
+
+        $this->tags->add($tag);
+        $tag->addProduct($this);
+    }
+
+    public function removeTag(Tag $tag)
+    {
+        if (!$this->tags->contains($tag)) {
+            return;
+        }
+
+        $this->tags->removeElement($tag);
+        $tag->removeProduct($this);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection|Tag[]
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }
