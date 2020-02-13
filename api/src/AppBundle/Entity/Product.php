@@ -32,8 +32,8 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=255)
+     * @Assert\NotBlank(groups={"default"})
+     * @Assert\Length(max=255, groups={"default", "patch"})
      */
     private $name;
 
@@ -41,6 +41,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="image", type="text")
+     * @Assert\NotBlank(groups={"default"})
      */
     private $image;
 
@@ -48,9 +49,9 @@ class Product
      * @var float
      *
      * @ORM\Column(name="price", type="float")
-     * @Assert\NotBlank()
-     * @Assert\Regex("/^\d+(\.?\d*?)$/")
-     * @Assert\GreaterThanOrEqual(1)
+     * @Assert\NotBlank(groups={"Default"})
+     * @Assert\Regex("/^\d+(\.?\d*?)$/", groups={"default", "patch"})
+     * @Assert\GreaterThanOrEqual(1, groups={"default", "patch"})
      */
     private $price;
 

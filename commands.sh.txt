@@ -32,6 +32,8 @@ docker-compose exec php bin/console doctrine:fixtures:load
 docker-compose exec php /bin/bash
 COMPOSER_MEMORY_LIMIT=-1 composer require friendsofsymfony/rest-bundle
 COMPOSER_MEMORY_LIMIT=-1 composer require jms/serializer-bundle
+# COMPOSER_MEMORY_LIMIT=-1 composer require willdurand/hateoas-bundle
+# COMPOSER_MEMORY_LIMIT=-1 composer remove willdurand/hateoas-bundle
 
 
 # view automatic generated routes

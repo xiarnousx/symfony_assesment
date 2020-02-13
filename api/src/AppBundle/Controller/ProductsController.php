@@ -2,11 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Tag;
 use AppBundle\Exception\ValidationException;
-use Doctrine\ORM\Query\AST\Functions\FunctionNode;
-use Exception;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -20,7 +19,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductsController extends AbstractController
 {
+    /**
+     * 
+     * @var EntityMerger
+     */
+    protected $merger;
+
     use ControllerTrait;
+
+    /**
+     *      
+     * @param EntityMerger $merger
+     */
+    public function __construct(EntityMerger $merger)
+    {
+        $this->merger = $merger;
+    }
 
     /**
      * @Rest\View()
@@ -64,6 +78,32 @@ class ProductsController extends AbstractController
     }
 
     /**
+     *
+     * @Rest\NoRoute()
+     * @ParamConverter("patched", converter="fos_rest.request_body", 
+     *  options={"validator" = {"groups" = {"patch"}}}
+     * )
+     */
+    public function patchProductAction(?Product $product, Product $patched, ConstraintViolationListInterface $validationErrors)
+    {
+        if (null === $product) {
+            return $this->view(null, 404);
+        }
+
+        if (count($validationErrors) > 0) {
+            throw new ValidationException($validationErrors);
+        }
+
+        $this->merger->merge($product, $patched);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($product);
+        $entityManager->flush();
+
+        return $product;
+    }
+
+    /**
      * @Rest\View()
      *
      */
@@ -91,7 +131,7 @@ class ProductsController extends AbstractController
 
         if (!is_array($tags) || 0 === count($tags)) {
             // @todo write proper exception handling for none array submited tags value.
-            $tags = [null];
+            return $this->view(null, 400);
         }
 
         $entityManager = $this->getDoctrine()->getManager();

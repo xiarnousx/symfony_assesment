@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Tag;
 use AppBundle\Exception\ValidationException;
 use FOS\RestBundle\Controller\ControllerTrait;
@@ -12,7 +13,22 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class TagsController extends Controller
 {
+    /**
+     * 
+     * @var EntityMerger
+     */
+    protected $merger;
+
     use ControllerTrait;
+
+    /**
+     *      
+     * @param EntityMerger $merger
+     */
+    public function __construct(EntityMerger $merger)
+    {
+        $this->merger = $merger;
+    }
 
     /**
      * @Rest\View()
@@ -38,6 +54,32 @@ class TagsController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($tag);
         $entityManager->flush();
+    }
+
+    /**
+     * 
+     * @ParamConverter("patched", converter="fos_rest.request_body",
+     * options={"validator" = {"groups" = {"patch"}}}
+     * )
+     * @Rest\NoRoute() 
+     */
+    public function patchTagsAction(?Tag $tag, Tag $patched, ConstraintViolationListInterface $validationErrors)
+    {
+        if (null === $tag) {
+            return $this->view(null, 404);
+        }
+
+        if (count($validationErrors) > 0) {
+            throw new ValidationException($validationErrors);
+        }
+
+        $this->merger->merge($tag, $patched);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($tag);
+        $entityManager->flush();
+
+        return $tag;
     }
 
     /**
