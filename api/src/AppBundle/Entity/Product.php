@@ -55,9 +55,12 @@ class Product
     private $price;
 
     /**
+     * Unidirectional ManyToMany
+     * Many Products have many tags
+     * 
      * @var \Doctrine\Common\Collections\Collection|Tag[]
      * 
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Tag", cascade="persist")
      * @ORM\JoinTable(
      *  name="product_tag",
      *  joinColumns={
@@ -165,7 +168,6 @@ class Product
         }
 
         $this->tags->add($tag);
-        $tag->addProduct($this);
     }
 
     public function removeTag(Tag $tag)
@@ -175,7 +177,6 @@ class Product
         }
 
         $this->tags->removeElement($tag);
-        $tag->removeProduct($this);
     }
 
     /**
