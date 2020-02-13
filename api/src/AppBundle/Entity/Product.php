@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Product
@@ -25,6 +26,7 @@ class Product
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Groups({"default"})
      */
     private $id;
 
@@ -32,16 +34,17 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotBlank(groups={"default"})
+     * @Assert\NotBlank(groups={"Default"})
      * @Assert\Length(max=255, groups={"default", "patch"})
+     * @Serializer\Groups({"Default", "patch", "deserialize"})
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="text")
-     * @Assert\NotBlank(groups={"default"})
+     * @ORM\Column(name="image", type="text", nullable=true)
+     * @Serializer\Groups({"Default", "patch"})
      */
     private $image;
 
@@ -50,8 +53,9 @@ class Product
      *
      * @ORM\Column(name="price", type="float")
      * @Assert\NotBlank(groups={"Default"})
-     * @Assert\Regex("/^\d+(\.?\d*?)$/", groups={"default", "patch"})
-     * @Assert\GreaterThanOrEqual(1, groups={"default", "patch"})
+     * @Assert\Regex("/^\d+(\.?\d*?)$/", groups={"Default", "patch"})
+     * @Assert\GreaterThanOrEqual(1, groups={"Default", "patch"})
+     * @Serializer\Groups({"Default", "patch", "deserialize"})
      */
     private $price;
 

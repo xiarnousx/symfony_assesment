@@ -30,8 +30,8 @@ class Tag
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
-     * @Assert\NotBlank(groups={"default"})
-     * @Assert\Length(max=255, groups={"default", "patch"})    
+     * @Assert\NotBlank(groups={"Default"})
+     * @Assert\Length(max=255, groups={"Default", "patch"})    
      *  
      */
     private $name;

@@ -27,6 +27,12 @@ products_tag_post:
         _controller: AppBundle\Controller\ProductsController:postProductTagAction
         _format: json
 
+products_image_upload_put:
+    path: /products/{product}/image/upload
+    methods: [PUT]
+    defaults:
+        _controller: AppBundle\Controller\ProductsController:putProductImageUploadAction
+
 tags:
     type: rest
     resource: AppBundle\Controller\TagsController

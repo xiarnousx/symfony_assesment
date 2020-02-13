@@ -1,5 +1,5 @@
 **/.web-server-pid
-**/app/config/parameters.yml
+#**/app/config/parameters.yml # THIS IS NOT PRODUCTION ENVIRNOMENT AND THIS PROJ IS FOR DEMO PURPOSES
 **/build/
 **/phpunit.xml
 **/var/*

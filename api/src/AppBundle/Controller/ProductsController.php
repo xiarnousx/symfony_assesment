@@ -6,12 +6,16 @@ use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Tag;
 use AppBundle\Exception\ValidationException;
+use AppBundle\Repository\ProductRepository;
+use finfo;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -25,15 +29,33 @@ class ProductsController extends AbstractController
      */
     protected $merger;
 
+    /**
+     * 
+     * @var string
+     */
+    protected $imageDirectory;
+
+    /**
+     * 
+     * @var string
+     */
+    protected $imageBaseUrl;
+
+
     use ControllerTrait;
 
     /**
      *      
      * @param EntityMerger $merger
      */
-    public function __construct(EntityMerger $merger)
-    {
+    public function __construct(
+        EntityMerger $merger,
+        string $imageDirectory,
+        string $imageBaseUrl
+    ) {
         $this->merger = $merger;
+        $this->imageDirectory = $imageDirectory;
+        $this->imageBaseUrl = $imageBaseUrl;
     }
 
     /**
@@ -48,8 +70,9 @@ class ProductsController extends AbstractController
     }
 
     /**
-     * @Rest\View(statusCode=201)
-     * @ParamConverter("product", converter="fos_rest.request_body")
+     * @ParamConverter("product", converter="fos_rest.request_body",
+     *  options={"deserializationContext"={"groups"={"deserialize"}}}
+     * )
      * @Rest\NoRoute() 
      */
     public function postProductsAction(Product $product, ConstraintViolationListInterface $validationErrors)
@@ -61,6 +84,54 @@ class ProductsController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($product);
         $entityManager->flush();
+
+        return $this->view($product, Response::HTTP_CREATED)->setHeader(
+            'Location',
+            $this->generateUrl(
+                'products_image_upload_put',
+                ['product' => $product->getId()]
+            )
+        );
+    }
+
+    /**
+     * 
+     * @Rest\NoRoute()
+     */
+    public function putProductImageUploadAction(?Product $product, Request $request)
+    {
+        if (null === $product) {
+            return $this->view(null, 404);
+        }
+
+        // Read Image from request body
+        $content = $request->getContent();
+
+        $tempFile = tmpfile();
+
+        $tempFilePath = stream_get_meta_data($tempFile)['uri'];
+
+        file_put_contents($tempFilePath, $content);
+
+        $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($fileInfo, $tempFilePath);
+
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+        if (!in_array($mimeType, $allowedTypes)) {
+            throw new UnsupportedMediaTypeHttpException('Uploaded File is not valid png/jpg/gif image');
+        }
+
+        $fileExtensionFinder = ExtensionGuesser::getInstance();
+
+        $newImage = md5(uniqid()) . '.' . $fileExtensionFinder->guess($mimeType);
+
+        copy($tempFilePath, $this->imageDirectory . DIRECTORY_SEPARATOR . $newImage);
+
+        $product->setImage($this->imageBaseUrl . $newImage);
+        $this->persistImage($product);
+
+        return new Response(null, Response::HTTP_OK);
     }
 
 
@@ -184,6 +255,13 @@ class ProductsController extends AbstractController
             $product->addTag($tag);
         }
 
+        $entityManager->persist($product);
+        $entityManager->flush();
+    }
+
+    private function persistImage(?Product $product)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($product);
         $entityManager->flush();
     }

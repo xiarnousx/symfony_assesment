@@ -17,3 +17,8 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+    
+    image_directory: "%kernel.project_dir%/web/uploads"
+    image_base_url: "/uploads/"
+
+
