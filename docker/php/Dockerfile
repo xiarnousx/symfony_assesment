@@ -19,7 +19,8 @@ RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 
-RUN export COMPOSER_MEMORY_LIMIT=-1
+RUN composer config --global repos.packagist composer https://packagist.org
+
 
 WORKDIR /usr/src/api
 
