@@ -6,8 +6,6 @@ use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Tag;
 use AppBundle\Exception\ValidationException;
-use AppBundle\Repository\ProductRepository;
-use finfo;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -128,10 +126,12 @@ class ProductsController extends AbstractController
 
         copy($tempFilePath, $this->imageDirectory . DIRECTORY_SEPARATOR . $newImage);
 
-        $product->setImage($this->imageBaseUrl . $newImage);
+        $siteUrl = $request->getSchemeAndHttpHost();
+
+        $product->setImage($siteUrl . $this->imageBaseUrl . $newImage);
         $this->persistImage($product);
 
-        return new Response(null, Response::HTTP_OK);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
 
