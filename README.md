@@ -34,7 +34,7 @@ id
 Consider we have an eCommerce system where the user can manage Products and can assign tags to each product.
 
 1. a Product has a name, image, price, and list of tags.
-1. a Tag has a name.
+2. a Tag has a name.
 
 **Create a project using symfony 3.4 and build the following APIs:**
 
@@ -63,7 +63,7 @@ Consider we have an eCommerce system where the user can manage Products and can 
     git clone https://github.com/xiarnousx/symfony_assesment.git .
 ```
 
-1. Run Docker Compose Command:
+2. Run Docker Compose Command:
 
 Assumption is made that docker and docker-compose are installed on target machine.
 
@@ -72,7 +72,7 @@ Assumption is made that docker and docker-compose are installed on target machin
     docker-compose up -d
 ```
 
-1. Install Symfony 3.4 and Other Project Dependencies via composer:
+3. Install Symfony 3.4 and Other Project Dependencies via composer:
 
 ```bash
     cd symfony_assessment
@@ -81,10 +81,11 @@ Assumption is made that docker and docker-compose are installed on target machin
     COMPOSER_MEMORY_LIMIT=-1 composer install
 ```
 
-1. Load Fake data into the system using fixtures:
+4. Load Fake data into the system using fixtures:
 
 For this purpose I have created command inside composer.json that does the below:
 
+- migrate the data using doctrine migration bundle
 - drop the schema
 - create the schema
 - load fake data into the system
@@ -93,10 +94,12 @@ To run the `reset-db` command do the below
 
 ```bash
     cd symfony_assessment
+    docker-compose exec php bin/console doctrine:migrations:diff
+    docker-compose exec php bin/console doctrine:migrations:migrate
     docker-compose exec php /bin/console reset-db
 ```
 
-1. Import Postman Collection:
+5. Import Postman Collection:
 
 At the root directory of `symfony_assessment` folder there is a file `SymfonyAssessment.postman_collection.json` which has a collection of used end points.
 
