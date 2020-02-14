@@ -113,25 +113,29 @@ The aforementioned postman collection has the below endpoints:
 
 **Product Related Endpoints:**
 
-|| Verb || PostMan Resource Name || Description ||
-| GET |List Products | Lists all Products With Paginiation.|
-| POST| Add New Product | Creates new product. **Special Note** the endpint has response header `Location` that contains link to upload an image using `PUT`|
-| PUT | Upload Product Image | Attach an image to a product. **Special Note** use `PUT` and `binary` payload using postman.|
-| PATCH | Update Product | Patch update a product. |
+| Verb  | PostMan Resource Name | Description                                                                                                                        |
+| ----- | :-------------------: | ---------------------------------------------------------------------------------------------------------------------------------- |
+| GET   |     List Products     | Lists all Products With Paginiation.                                                                                               |
+| POST  |    Add New Product    | Creates new product. **Special Note** the endpint has response header `Location` that contains link to upload an image using `PUT` |
+| PUT   | Upload Product Image  | Attach an image to a product. **Special Note** use `PUT` and `binary` payload using postman.                                       |
+| PATCH |    Update Product     | Patch update a product.                                                                                                            |
 
 **Tag Related Endpoints:**
 
-|| Verb || PostMan Resource Name || Description ||
-| GET | List Tags | List all Tags With Paginiation |
-| POST | Add New Tag | Adds new tag. |
-| PATCH | Update Tag | Patch update a tag |
+| Verb  | PostMan Resource Name | Description                    |
+| ----- | :-------------------: | ------------------------------ |
+| GET   |       List Tags       | List all Tags With Paginiation |
+| POST  |      Add New Tag      | Adds new tag.                  |
+| PATCH |      Update Tag       | Patch update a tag             |
 
 **Product Tags Association EndPoints:**
 
-|| Verb || PostMan Resource Name || Description ||
-| POST | Associate Product With Tags | A post request that accept tags id array payload.|
+| Verb |    PostMan Resource Name    | Description                                       |
+| ---- | :-------------------------: | ------------------------------------------------- |
+| POST | Associate Product With Tags | A post request that accept tags id array payload. |
 
 **Search for Products by Tag Name Endponts:**
 
-|| Verb || PostMan Resource Name || Description ||
-| GET | Search Products By Tag Name | A get request that has array tags query parameters with tag names.|
+| Verb |    PostMan Resource Name    | Description                                                        |
+| ---- | :-------------------------: | ------------------------------------------------------------------ |
+| GET  | Search Products By Tag Name | A get request that has array tags query parameters with tag names. |
