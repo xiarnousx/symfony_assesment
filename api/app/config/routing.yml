@@ -1,52 +1,56 @@
 app:
-    resource: "@AppBundle/Controller/"
-    type: annotation
+  resource: "@AppBundle/Controller/"
+  type: annotation
 
 products:
-    type: rest
-    resource: AppBundle\Controller\ProductsController
+  type: rest
+  resource: AppBundle\Controller\ProductsController
 
 products_post:
-    path: /products
-    methods: [POST]
-    defaults:
-        _controller: AppBundle\Controller\ProductsController:postProductsAction
-        _format: json
+  path: /products
+  methods: [POST]
+  defaults:
+    _controller: AppBundle\Controller\ProductsController:postProductsAction
+    _format: json
 
 products_patch:
-    path: /products/{product}
-    methods: [PATCH]
-    defaults:
-        _controller: AppBundle\Controller\ProductsController:patchProductAction
-        _format: json
+  path: /products/{product}
+  methods: [PATCH]
+  defaults:
+    _controller: AppBundle\Controller\ProductsController:patchProductAction
+    _format: json
 
 products_tag_post:
-    path: /products/{product}/tag
-    methods: [POST]
-    defaults:
-        _controller: AppBundle\Controller\ProductsController:postProductTagAction
-        _format: json
+  path: /products/{product}/tag
+  methods: [POST]
+  defaults:
+    _controller: AppBundle\Controller\ProductsController:postProductTagAction
+    _format: json
 
 products_image_upload_put:
-    path: /products/{product}/image/upload
-    methods: [PUT]
-    defaults:
-        _controller: AppBundle\Controller\ProductsController:putProductImageUploadAction
+  path: /products/{product}/image/upload
+  methods: [PUT]
+  defaults:
+    _controller: AppBundle\Controller\ProductsController:putProductImageUploadAction
 
 tags:
-    type: rest
-    resource: AppBundle\Controller\TagsController
+  type: rest
+  resource: AppBundle\Controller\TagsController
 
 tags_post:
-    path: /tags
-    methods: [POST]
-    defaults:
-        _controller: AppBundle\Controller\TagsController:postTagsAction
-        _format: json
+  path: /tags
+  methods: [POST]
+  defaults:
+    _controller: AppBundle\Controller\TagsController:postTagsAction
+    _format: json
 
 tags_patch:
-    path: /tags/{tag}
-    methods: [PATCH]
-    defaults:
-        _controller: AppBundle\Controller\TagsController:patchTagsAction
-        _format: json
+  path: /tags/{tag}
+  methods: [PATCH]
+  defaults:
+    _controller: AppBundle\Controller\TagsController:patchTagsAction
+    _format: json
+
+search:
+  type: rest
+  resource: AppBundle\Controller\SearchController

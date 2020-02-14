@@ -44,7 +44,7 @@ class Pagination
         $offset = ($page - 1) * $limit;
 
 
-
+        // @todo Add support for sorting currently null is passed.
         $resources = $repository->findBy($criteria, null, $limit, $offset);
 
         $rescourcesCount = $repository->total($criteria);

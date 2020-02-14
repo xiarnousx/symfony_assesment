@@ -9,8 +9,6 @@ use AppBundle\Exception\ValidationException;
 use AppBundle\Util\Pagination;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Hateoas\Representation\CollectionRepresentation;
-use Hateoas\Representation\PaginatedRepresentation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
