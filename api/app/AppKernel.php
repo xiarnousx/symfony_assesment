@@ -2,8 +2,11 @@
 
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
+use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
 use FOS\RestBundle\FOSRestBundle;
+use Hautelook\AliceBundle\HautelookAliceBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
+use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -35,6 +38,9 @@ class AppKernel extends Kernel
             if ('dev' === $this->getEnvironment()) {
                 $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
+                $bundles[] = new NelmioAliceBundle();
+                $bundles[] = new FidryAliceDataFixturesBundle();
+                $bundles[] = new HautelookAliceBundle();
             }
         }
 

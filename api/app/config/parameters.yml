@@ -10,5 +10,5 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: this-is-a-secret
-    image_directory: "%kernel.project_dir%/web/uploads"
-    image_base_url: "/uploads/"
+    image_directory: '%kernel.project_dir%/web/uploads'
+    image_base_url: /uploads/

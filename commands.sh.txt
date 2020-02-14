@@ -30,10 +30,15 @@ docker-compose exec php bin/console doctrine:fixtures:load
 # install FOSRestBundle packages which aid in view response format and auto decode json to doctrine entity
 # below package makes it easy to write restful end points with symfony.
 docker-compose exec php /bin/bash
+#
 COMPOSER_MEMORY_LIMIT=-1 composer require friendsofsymfony/rest-bundle
+# 
 COMPOSER_MEMORY_LIMIT=-1 composer require jms/serializer-bundle
-# COMPOSER_MEMORY_LIMIT=-1 composer require willdurand/hateoas-bundle
-# COMPOSER_MEMORY_LIMIT=-1 composer remove willdurand/hateoas-bundle
+# Used to generate lumpsum of fake data
+COMPOSER_MEMORY_LIMIT=-1 composer require --dev hautelook/alice-bundle:^2.1
+COMPOSER_MEMORY_LIMIT=-1 composer require --dev nelmio/alice:^3.5.8
+COMPOSER_MEMORY_LIMIT=-1 composer require --dev theofidry/alice-data-fixtures:^1.1.2
+
 
 
 # view automatic generated routes

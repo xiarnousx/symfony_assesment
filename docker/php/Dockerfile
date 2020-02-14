@@ -6,7 +6,9 @@ RUN pecl install apcu
 
 RUN apt-get update && \
     apt-get install -y \
-    zlib1g-dev
+    zlib1g-dev \
+    zip \
+    unzip
 
 RUN docker-php-ext-install zip
 RUN docker-php-ext-enable apcu

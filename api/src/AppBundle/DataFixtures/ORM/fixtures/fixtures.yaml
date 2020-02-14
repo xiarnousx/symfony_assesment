@@ -1,0 +1,11 @@
+---
+AppBundle\Entity\Tag:
+  tag_{1..20}:
+    name (unique): <username()>
+
+AppBundle\Entity\Product:
+  product_{1..50}:
+    name: <username()>
+    price: <numberBetween(10, 999)>
+    image: http://localhost/uploads/0abda1d0377099000e2405351c45a2fb.png
+    tags: ["@tag_<numberBetween(1, 20)>"]
