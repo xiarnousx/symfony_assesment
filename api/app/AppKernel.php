@@ -1,5 +1,6 @@
 <?php
 
+use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
@@ -26,6 +27,7 @@ class AppKernel extends Kernel
             new DoctrineMigrationsBundle(),
             new JMSSerializerBundle(),
             new FOSRestBundle(),
+            new BazingaHateoasBundle(),
             new AppBundle\AppBundle(),
         ];
 

@@ -6,8 +6,11 @@ use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Tag;
 use AppBundle\Exception\ValidationException;
+use AppBundle\Util\Pagination;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Hateoas\Representation\CollectionRepresentation;
+use Hateoas\Representation\PaginatedRepresentation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
@@ -39,6 +42,12 @@ class ProductsController extends AbstractController
      */
     protected $imageBaseUrl;
 
+    /**
+     *
+     * @var Pagination
+     */
+    protected $paginator;
+
 
     use ControllerTrait;
 
@@ -49,22 +58,30 @@ class ProductsController extends AbstractController
     public function __construct(
         EntityMerger $merger,
         string $imageDirectory,
-        string $imageBaseUrl
+        string $imageBaseUrl,
+        Pagination $paginator
     ) {
         $this->merger = $merger;
         $this->imageDirectory = $imageDirectory;
         $this->imageBaseUrl = $imageBaseUrl;
+        $this->paginator = $paginator;
     }
 
     /**
      * @Rest\View()
      *
      */
-    public function getProductsAction()
+    public function getProductsAction(Request $request)
     {
-        $products = $this->getDoctrine()->getRepository('AppBundle:Product')->findAll();
+        $paginated = $this->paginator->paginate(
+            $request,
+            'AppBundle:Product',
+            'get_products',
+            [],
+            []
+        );
 
-        return $products;
+        return $paginated;
     }
 
     /**

@@ -5,10 +5,14 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Tag;
 use AppBundle\Exception\ValidationException;
+use AppBundle\Util\Pagination;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Hateoas\Representation\CollectionRepresentation;
+use Hateoas\Representation\PaginatedRepresentation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class TagsController extends Controller
@@ -19,25 +23,38 @@ class TagsController extends Controller
      */
     protected $merger;
 
+    /**
+     *
+     * @var Pagination
+     */
+    protected $paginator;
+
     use ControllerTrait;
 
     /**
      *      
      * @param EntityMerger $merger
      */
-    public function __construct(EntityMerger $merger)
+    public function __construct(EntityMerger $merger, Pagination $paginator)
     {
         $this->merger = $merger;
+        $this->paginator = $paginator;
     }
 
     /**
      * @Rest\View()
      */
-    public function getTagsAction()
+    public function getTagsAction(Request $request)
     {
-        $tags = $this->getDoctrine()->getRepository('AppBundle:Tag')->findAll();
+        $paginated = $this->paginator->paginate(
+            $request,
+            'AppBundle:Tag',
+            'get_tags',
+            [],
+            []
+        );
 
-        return $tags;
+        return $paginated;
     }
 
     /**
